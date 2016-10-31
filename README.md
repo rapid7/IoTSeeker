@@ -1,17 +1,18 @@
 # IoTSeeker
 
 
-   This scanner will scan specific types of IoT devices to detect if they still have the default credentials on. The recent 
-Internet outage was because of the IoT devices (IP Camera and such) with default password.   It's the intention of this tool
-help organizations to scan and detect this type of IoTs. Note that the Miral software, the one responsible for massive internet outage on Oct 21, 2016, mainly focuses on telnet services,  IoTSeeker, on the other hand, focuses on HTTP/HTTPS services.
+   This scanner will scan a network for specific types of IoT devices to detect if they are using the default, factory set credentials. The recent Internet outage has been attributed to use the IoT devices (CCTV Cameras, DVRs and others) with default credentials. It's the intention of this tool to help organizations scan their networks to detect these types of IoT devices and to identify whether credentials have been changed or if the device is still using the factory setting. Note that Mirai malware, suspected to have been used to launch the massive internet outage on Oct 21, 2016, mainly focuses on telnet services. IoTSeeker focuses on HTTP/HTTPS services.
 
-Due to the potentially large number of IoT types and large IP ranges, this tool was designed with 
+
+   In order to accommodate large IP ranges and make it capable of finding a large number of different types of IoT devices, this tool was designed with:
+
 
 * High parallelism. So that it can scan thousands of IoT's at the same time
-* Extensibility.  So one doesn't need to change lots of code to add the support for a new IoT.
+* Extensibility, making it easy to support new types of devices without needing to change or write lots of code.
 
-The software has two parts. One is the device configuration file which is in JSON format,  the other is the scanner coded
-in perl that does scanning, device identification and logging under the control the device configuration file.
+
+The software has two parts. One is the device configuration file which is in JSON format,  the other is the scanner, coded
+in perl, that does scanning, device identification and logging under the control the device configuration file.
 
 This software uses the perl module AnyEvent for high parallelism and as a result, it only runs on Linux or Mac OS.
 
