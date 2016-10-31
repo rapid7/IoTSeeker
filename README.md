@@ -1,9 +1,9 @@
 # IoTSeeker
 
 
-   This scanner will scan different types of IoT devices to detect if they still have the default credentials on. The recent 
+   This scanner will scan specific types of IoT devices to detect if they still have the default credentials on. The recent 
 Internet outage was because of the IoT devices (IP Camera and such) with default password.   It's the intention of this tool
-help organizations to scan and detect this type of IoTs. Note that the Miral software, the one responsible for massive internet outage on Oct 21, 2016, mainly focuses on telnet services,  IoTSeeker focuses on HTTP/HTTPS services.
+help organizations to scan and detect this type of IoTs. Note that the Miral software, the one responsible for massive internet outage on Oct 21, 2016, mainly focuses on telnet services,  IoTSeeker, on the other hand, focuses on HTTP/HTTPS services.
 
 Due to the potentially large number of IoT types and large IP ranges, this tool was designed with 
 
@@ -11,7 +11,7 @@ Due to the potentially large number of IoT types and large IP ranges, this tool 
 * Extensibility.  So one doesn't need to change lots of code to add the support for a new IoT.
 
 The software has two parts. One is the device configuration file which is in JSON format,  the other is the scanner coded
-in perl that does scanning, device identification and logging under the control the device configuration.
+in perl that does scanning, device identification and logging under the control the device configuration file.
 
 This software uses the perl module AnyEvent for high parallelism and as a result, it only runs on Linux or Mac OS.
 
