@@ -1,10 +1,9 @@
 # IoTSeeker
-# Scanner to detect IoT's still with default password
 
 
    This scanner will scan different types of IoT devices to detect if they still have the default credentials on. The recent 
 Internet outage was because of the IoT devices (IP Camera and such) with default password.   It's the intention of this tool
-help organizations to scan and detect this type of IoTs. 
+help organizations to scan and detect this type of IoTs. Note that the Miral software, the one responsible for massive internet outage on Oct 21, 2016, mainly focuses on telnet services,  IoTSeeker focuses on HTTP/HTTPS services.
 
 Due to the potentially large number of IoT types and large IP ranges, this tool was designed with 
 
