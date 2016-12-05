@@ -75,7 +75,7 @@ sub check_login {
 				} else {
 					print "device $ctx->{ip} of type $ctx->{devType} has changed password\n";
 				}
-				$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+				$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 			};
 			return;
 		}
@@ -110,14 +110,14 @@ sub check_login {
 						} else {
 							print "device $ctx->{ip} of type $ctx->{devType} has changed password\n";
 						}
-						$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+						$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 					} elsif ($dev->{auth}->[4] eq "!substr") {
 						if (index($body, $dev->{auth}->[5]) < 0) {
 							print "device $ctx->{ip} is of type $ctx->{devType} still has default password\n";
 						} else {
 							print "device $ctx->{ip} of type $ctx->{devType} has changed password\n";
 						}
-						$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+						$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 					}
 				} 
 			};
@@ -143,7 +143,7 @@ sub check_login {
 		} else {
 			print "device $ctx->{ip}: unexpected resp code $status\n";
 		}
-		$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+		$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 	};
 }
 
@@ -227,7 +227,7 @@ sub check {
 			$devType = search4devType();
 			if ($devType eq "") {
 				print "$ctx->{ip}: didnot find dev type after trying all devices\n";
-				$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+				$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 				kickoff();
 				return;
 			}
@@ -256,7 +256,7 @@ sub check {
 			}
 		} elsif ($status == 404) {
 			print "canot find dev type for $ctx->{ip} due to 404 response\n";
-			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 			return;
 		} else {
 			if ($status == 595) {
@@ -264,13 +264,13 @@ sub check {
 			} else {
 				print "unexpected status code $status for ip $ctx->{ip}\n";
 			}
-			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 			return;
 		}
 		$devType = search4devType();
 		if ($devType eq "") {
 			print "$ctx->{ip}: didnot find dev type after trying all devices\n";
-			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 			kickoff();
 			return;
 		}
@@ -354,7 +354,7 @@ sub search4login {
 	#print "devType=$devType|\n";
 	if ($devType eq "") { 
 		print "didnot find devType for $ctx->{ip}\n";
-		$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+		$numOfResults ++; if ($numOfResults == $numOfIps) { exit;} else {kickoff();}
 		return; }
 	my $pattern = $devs->{$devType}->{loginUrlPattern};
 	#printf "%d pattern=$pattern\n", length($body);
