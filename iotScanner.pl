@@ -18,7 +18,7 @@ if ($ARGV[0] =~ /^\-?h/) {
 	exit;
 }
 my $devCfgUrl = "";
-for ($i=1; $i<=$ARGV; $i++) {
+for ($i=1; $i<=$#ARGV; $i++) {
 	if ($ARGV[$i] =~ /devCfgUrl=/) {
 		$devCfgUrl = $';
 	} elsif ($ARGV[$i] =~ /^debug/) {
@@ -27,6 +27,7 @@ for ($i=1; $i<=$ARGV; $i++) {
 		} else {
 			$debug = 1;
 		}
+		print "debug=$debug\n";
 	}
 }
 readDevices();
@@ -43,7 +44,8 @@ foreach $e (split(/\,/, $ARGV[0])) {
 		push @ipList, $e;
 	}
 }
-
+my $numOfIps = scalar @ipList;
+my $numOfResults = 0;
 my $i;
 my $w = AnyEvent->condvar; #
 
@@ -73,6 +75,7 @@ sub check_login {
 				} else {
 					print "device $ctx->{ip} of type $ctx->{devType} has changed password\n";
 				}
+				$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
 			};
 			return;
 		}
@@ -107,12 +110,14 @@ sub check_login {
 						} else {
 							print "device $ctx->{ip} of type $ctx->{devType} has changed password\n";
 						}
+						$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
 					} elsif ($dev->{auth}->[4] eq "!substr") {
 						if (index($body, $dev->{auth}->[5]) < 0) {
 							print "device $ctx->{ip} is of type $ctx->{devType} still has default password\n";
 						} else {
 							print "device $ctx->{ip} of type $ctx->{devType} has changed password\n";
 						}
+						$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
 					}
 				} 
 			};
@@ -135,7 +140,10 @@ sub check_login {
 			print "device $ctx->{ip} is of type $ctx->{devType} still has default password\n";
 		} elsif ($status == 401 && $ctx->{dev}->{auth}->[0] eq "basic") {
 			print "device $ctx->{ip} is of type $ctx->{devType} has changed password\n";
+		} else {
+			print "device $ctx->{ip}: unexpected resp code $status\n";
 		}
+		$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
 	};
 }
 
@@ -218,7 +226,8 @@ sub check {
 		} elsif ($status == 401) {
 			$devType = search4devType();
 			if ($devType eq "") {
-				if ($debug) {print "didnot find dev type for $ctx->{ip} after trying all devices\n";}
+				print "$ctx->{ip}: didnot find dev type after trying all devices\n";
+				$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
 				kickoff();
 				return;
 			}
@@ -246,13 +255,22 @@ sub check {
 				}
 			}
 		} elsif ($status == 404) {
-			print "canot find dev type for $ctx->{ip} due to 404 response\n"; return;
+			print "canot find dev type for $ctx->{ip} due to 404 response\n";
+			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+			return;
 		} else {
-			print "unexpected status code $status for ip $ctx->{ip}\n"; return;
+			if ($status == 595) {
+				print "device $ctx->{ip}: failed to establish TCP connection\n";
+			} else {
+				print "unexpected status code $status for ip $ctx->{ip}\n";
+			}
+			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+			return;
 		}
 		$devType = search4devType();
 		if ($devType eq "") {
-			if ($debug) {print "didnot find dev type for $ctx->{ip} after trying all devices\n";}
+			print "$ctx->{ip}: didnot find dev type after trying all devices\n";
+			$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
 			kickoff();
 			return;
 		}
@@ -334,7 +352,10 @@ sub search4login {
 	my $ctx = shift;
 	$devType = match();
 	#print "devType=$devType|\n";
-	if ($devType eq "") { print "didnot find devType for $ctx->{ip}\n"; return; }
+	if ($devType eq "") { 
+		print "didnot find devType for $ctx->{ip}\n";
+		$numOfResults ++; if ($numOfResults == $numOfIps) { exit;}
+		return; }
 	my $pattern = $devs->{$devType}->{loginUrlPattern};
 	#printf "%d pattern=$pattern\n", length($body);
 	if ($body =~ /$pattern/) {
