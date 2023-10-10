@@ -8,22 +8,8 @@ info:
       repository: rapid7/IoTSeeker
   x-cortex-tag: iotseeker
   x-cortex-type: service
-  x-cortex-owners:
-  - type: SLACK
-    channel: soar
-    notificationsEnabled: 'false'
-  - type: SLACK
-    channel: ask-infosec
-    notificationsEnabled: 'false'
-  - type: SLACK
-    channel: exploit-dev
-    notificationsEnabled: 'false'
-  - type: SLACK
-    channel: platform-delivery
-    notificationsEnabled: 'false'
-  - type: SLACK
-    channel: invisible
-    notificationsEnabled: 'false'
+  x-cortex-domain-parents:
+  - tag: octo-and-labs
 openapi: 3.0.1
 servers:
 - url: "/"
