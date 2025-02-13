@@ -10,6 +10,8 @@ info:
   x-cortex-type: service
   x-cortex-domain-parents:
   - tag: octo-and-labs
+  x-cortex-groups:
+  - exposure:internal-ship
 openapi: 3.0.1
 servers:
 - url: "/"
